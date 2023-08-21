@@ -15,12 +15,12 @@ This will start the server on port 3000. You can then open your browser to http:
 Features
 This project includes the following features:
 
-Product browsing
-Cart functionality
-Checkout shopify
-Search products
-Create client account
-Banners
+Product browsing,
+Cart functionality,
+Checkout shopify,
+Search products,
+Create client account,
+Banners,
 
 Learn More
 To learn more about this project, please see the following resources:
