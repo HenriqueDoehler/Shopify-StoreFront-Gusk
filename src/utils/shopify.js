@@ -1,6 +1,4 @@
 const storefrontAccessToken = process.env.NEXT_PUBLIC_STOREFRONTACCESSTOKEN;
-const YAMPI_API_URL = "https://api.dooki.com.br/v2/gusk-imports2"; // Substitua com a URL correta da API do Yampi
-const YAMPI_API_KEY = "sk_pQ9kiiagzLfkMLqcLpqL0RABTya56ahnAWtnH"; // Substitua com sua chave de API real
 
 const endpoint = `https://${process.env.NEXT_PUBLIC_SHOPURL}api/2023-07/graphql.json`;
 import { gql, GraphQLClient } from "graphql-request";
@@ -11,16 +9,6 @@ const graphQLClient = new GraphQLClient(endpoint, {
     "Content-Type": "application/json",
   },
 });
-
-const graphQLClientYampi = new GraphQLClient(
-  "https://api.dooki.com.br/v2/public/shopify/cart",
-  {
-    headers: {
-      authorization:
-        "Bearer sk_pQ9kiiagzLfkMLqcLpqL0RABTya56ahnAWtnH1dsafgggsdgds",
-    },
-  }
-);
 
 export const getProducts = async () => {
   const getAllProductsQuery = gql`
