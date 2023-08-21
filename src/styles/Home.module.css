@@ -104,9 +104,7 @@
   transform: translateZ(0);
 }
 
-.logo {
-  position: relative;
-}
+
 /* Enable hover only on non-touch devices */
 @media (hover: hover) and (pointer: fine) {
   .card:hover {
@@ -226,4 +224,201 @@
   to {
     transform: rotate(0deg);
   }
+}
+
+.header {
+  background-color: #d31e1e00;
+  min-width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  height: 100px;
+  padding: 0 2rem;
+  margin-bottom: 40px;
+}
+
+.containerNavbar1{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.containerNavbar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.imgLogo {
+  width: 120px;
+  height: 50px;
+  margin: 10px 1px;
+}
+
+.imgIcon {
+  width: 50px;
+  height: 50px;
+}
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.containerNavbar{
+  display: flex;
+  position:relative;
+  top: 30px;
+}
+
+.navMenu {
+  display: flex;
+  justify-content: space-between;
+  
+  width: 880px;
+  /* margin-top: 0px; */
+  background-color: rgba(120, 46, 46, 0);
+}
+
+.navMenu a {
+  color: #f6f4e6;
+  text-decoration: none;
+  font-size: 1em;
+  font-weight: 100;
+  display: inline-block;
+  text-align: center;
+  margin: 5px;
+  transition: all 0.2s ease-in-out;
+}
+
+.navMenu .dot {
+  margin-left: 10px; /* cria algum espaço entre o texto e a bolinha */
+  width: 6px;
+  height: 6px;
+  background: #de900b;
+  border-radius: 50%;
+  opacity: 0;
+  transition: all 0.2s ease-in-out;
+}
+.navMenu a:hover .dot {
+  opacity: 1;
+}
+
+.navMenu a:nth-child(1):hover ~ .dot {
+  -webkit-transform: translateX(30px);
+  transform: translateX(30px);
+  -webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  opacity: 1;
+}
+
+.navMenu a:nth-child(2):hover ~ .dot {
+  -webkit-transform: translateX(110px);
+  transform: translateX(110px);
+  -webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  opacity: 1;
+}
+
+.navMenu a:nth-child(3):hover ~ .dot {
+  -webkit-transform: translateX(200px);
+  transform: translateX(200px);
+  -webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  opacity: 1;
+}
+
+.navMenu a:nth-child(4):hover ~ .dot {
+  -webkit-transform: translateX(285px);
+  transform: translateX(285px);
+  -webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  opacity: 1;
+}
+
+.navMenu a:nth-child(5):hover ~ .dot {
+  -webkit-transform: translateX(9810%);
+  transform: translateX(9810%);
+  -webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  opacity: 1;
+}
+
+.navMenu a:nth-child(6):hover ~ .dot {
+  -webkit-transform: translateX(12350%);
+  transform: translateX(12350%);
+  -webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  opacity: 1;
+}
+
+.navMenu a:nth-child(7):hover ~ .dot {
+  -webkit-transform: translateX(14860%);
+  transform: translateX(14860%);
+  -webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  opacity: 1;
+}
+
+.navMenu a:nth-child(8):hover ~ .dot {
+  -webkit-transform: translateX(16540%);
+  transform: translateX(16540%);
+  -webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  opacity: 1;
+}
+
+
+.searchBox {
+  display: flex;
+  align-items: center;
+  background-color: #ffffff00;
+  border-radius: 25px;
+  padding: 5px 10px;
+  box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1);
+  border: 2px solid rgba(96, 93, 93, 0.796); 
+  margin-bottom: -10px;
+  width: 500px;
+  height: 40px;
+}
+
+.searchInput {
+  background-color: #ffffff00;
+  border-radius: 25px;
+  padding: 5px 10px;
+  box-shadow: 0px 1px 5px rgba(0, 0, 0, 0);
+  
+  height: 40px;
+  font-size: 18px;
+  flex: 1;
+  border: none;
+  outline: none;
+}
+
+.searchIcon {
+ 
+  margin-left: 10px;
+}
+
+.searchIcon img {
+  width: 24px;
+  height: 24px;
+}
+
+.searchResults {
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.9);
+  max-height: 200px;
+  overflow-y: auto;
+  width: 490px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  z-index: 1;
+  top: 9%;
+  left: 51%;
+  transform: translateX(-50%);
+  color:#1a1a1a;
 }

@@ -1,5 +1,17 @@
-import '@/styles/globals.css'
+import { useState } from "react";
+import AppContext from "../context/AppContext";
+import "../styles/globals.css";
 
-export default function App({ Component, pageProps }) {
-  return <Component {...pageProps} />
+function MyApp({ Component, pageProps }) {
+  const [data, setData] = useState({
+    name: "John Doe",
+  });
+
+  return (
+    <AppContext.Provider value={{ data, setData }}>
+      <Component {...pageProps} />
+    </AppContext.Provider>
+  );
 }
+
+export default MyApp;
