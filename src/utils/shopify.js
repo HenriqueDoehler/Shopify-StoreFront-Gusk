@@ -91,39 +91,6 @@ export const addToCart = async (itemId, quantity) => {
   }
 };
 
-// export const addToCart = async (itemId, quantity) => {
-//   const createCartMutation = gql`
-//     mutation createCart($cart_payload: Cart_payload) {
-//       yampiCartCreate(input: $cart_payload) {
-//         cart {
-//           id
-//         }
-//       }
-//     }
-//   `;
-
-//   const variables = {
-//     cart_payload: {
-//       lines: [
-//         {
-//           quantity: parseInt(quantity),
-//           merchandiseId: itemId,
-//         },
-//       ],
-//     },
-//   };
-
-//   try {
-//     const data = await graphQLClientYampi.request(
-//       createCartMutation,
-//       variables
-//     );
-//     return data;
-//   } catch (error) {
-//     throw new Error(error);
-//   }
-// };
-
 export const updateCart = async (cartId, itemId, quantity) => {
   const updateCartMutation = gql`
     mutation cartLinesAdd($cartId: ID!, $lines: [CartLineInput!]!) {
