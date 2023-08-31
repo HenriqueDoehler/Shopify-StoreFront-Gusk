@@ -1,10 +1,12 @@
 import Head from "next/head";
+import { useState } from "react";
 import styles from "../styles/Home.module.css";
-import { getProducts, getBannersHome } from "../utils/shopify";
+import { getProducts, getBannersHome, getCollections } from "../utils/shopify";
 import ProductCard from "../components/ProductCard/ProductCard";
+import CollectionsCard from "@/components/CollectionCard/CollectionCard";
 import Header from "../components/Header/Header";
 
-export default function Home({ data }) {
+export default function Home({ data, collections, collectionsWithImageUrl }) {
   const products = data.products.edges;
 
   return (
@@ -17,6 +19,10 @@ export default function Home({ data }) {
       </Head>
       <Header />
       <main>
+        <div>
+          <img src="/banner1.svg" />
+        </div>
+        <Carousel collectionsWithImageUrl={collectionsWithImageUrl} />
         <div className={styles.products}>
           {products.map((product) => {
             return <ProductCard key={product.node.id} product={product} />;
@@ -26,10 +32,64 @@ export default function Home({ data }) {
     </>
   );
 }
+
 export const getServerSideProps = async () => {
   const data = await getProducts();
+  const collections = await getCollections();
+  const allCollections = collections.collections.edges.flat();
+  const collectionsWithImageUrl = allCollections.map((collection) => {
+    const image = collection.node.image;
+    const imageUrl = image.src;
 
+    return {
+      ...collection,
+      imageUrl,
+    };
+  });
+  console.log(collectionsWithImageUrl);
   return {
-    props: { data },
+    props: { data, collectionsWithImageUrl },
   };
+};
+
+const Carousel = ({ collectionsWithImageUrl }) => {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  const totalCollections = collectionsWithImageUrl.length;
+  const itemsPerPage = 3;
+
+  const totalPages = Math.ceil(totalCollections / itemsPerPage);
+
+  const handleClick = () => {
+    setCurrentImageIndex((currentImageIndex + 1) % totalPages);
+  };
+
+  return (
+    <div className={styles.carouselContainer}>
+      <div className={styles.carousel}>
+        {collectionsWithImageUrl
+          .slice(
+            currentImageIndex * itemsPerPage,
+            (currentImageIndex + 1) * itemsPerPage
+          )
+          .map((collection) => (
+            <div
+              className={styles.containerCollections}
+              key={collection.node.id}
+            >
+              <span className={styles.titleCollection}>
+                {collection.node.title}
+              </span>
+              <span className={styles.descriptionCollection}>
+                {collection.node.description}
+              </span>
+              <img className={styles.imgCarousel} src={collection.imageUrl} />
+            </div>
+          ))}
+        <button onClick={handleClick}>
+          <img src="/assets/arrow-right.svg" />
+        </button>
+      </div>
+    </div>
+  );
 };

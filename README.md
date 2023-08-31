@@ -25,7 +25,6 @@ Banners,
 Learn More
 To learn more about this project, please see the following resources:
 
-README: README.md
 Source code: https://github.com/HenriqueDoehler/Shopify-StoreFront-Gusk
 Documentation: https://shopify.dev/docs/api/storefront
 

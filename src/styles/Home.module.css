@@ -422,3 +422,56 @@
   transform: translateX(-50%);
   color:#1a1a1a;
 }
+
+
+.carousel{
+  /* background-color: red; */
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  
+  width: 1000px ;
+  
+ 
+}
+.carouselContainer{
+  /* background-color: blue; */
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  height: 390px;
+  
+ 
+}
+
+.containerCollections{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  width: 321px;
+  height: 350px;
+  /* background-color: black; */
+  box-shadow: 0 0 8px rgba(196, 193, 193, 0.499);
+
+}
+
+.imgCarousel{
+  width: 250px;
+  height: 250px;
+  padding: 10px;
+}
+
+.titleCollection{
+  font-size: large;
+  font-weight: 900;
+}
+.descriptionCollection{
+  font-size: medium;
+  font-weight: 600;
+  color:  #898989;
+  line-height: 28px;
+  height: 30px;
+}

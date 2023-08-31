@@ -1,6 +1,4 @@
 const storefrontAccessToken = process.env.NEXT_PUBLIC_STOREFRONTACCESSTOKEN;
-const YAMPI_API_URL = "https://api.dooki.com.br/v2/gusk-imports2"; // Substitua com a URL correta da API do Yampi
-const YAMPI_API_KEY = "sk_pQ9kiiagzLfkMLqcLpqL0RABTya56ahnAWtnH"; // Substitua com sua chave de API real
 
 const endpoint = `https://${process.env.NEXT_PUBLIC_SHOPURL}api/2023-07/graphql.json`;
 import { gql, GraphQLClient } from "graphql-request";
@@ -11,16 +9,6 @@ const graphQLClient = new GraphQLClient(endpoint, {
     "Content-Type": "application/json",
   },
 });
-
-const graphQLClientYampi = new GraphQLClient(
-  "https://api.dooki.com.br/v2/public/shopify/cart",
-  {
-    headers: {
-      authorization:
-        "Bearer sk_pQ9kiiagzLfkMLqcLpqL0RABTya56ahnAWtnH1dsafgggsdgds",
-    },
-  }
-);
 
 export const getProducts = async () => {
   const getAllProductsQuery = gql`
@@ -90,39 +78,6 @@ export const addToCart = async (itemId, quantity) => {
     throw new Error(error);
   }
 };
-
-// export const addToCart = async (itemId, quantity) => {
-//   const createCartMutation = gql`
-//     mutation createCart($cart_payload: Cart_payload) {
-//       yampiCartCreate(input: $cart_payload) {
-//         cart {
-//           id
-//         }
-//       }
-//     }
-//   `;
-
-//   const variables = {
-//     cart_payload: {
-//       lines: [
-//         {
-//           quantity: parseInt(quantity),
-//           merchandiseId: itemId,
-//         },
-//       ],
-//     },
-//   };
-
-//   try {
-//     const data = await graphQLClientYampi.request(
-//       createCartMutation,
-//       variables
-//     );
-//     return data;
-//   } catch (error) {
-//     throw new Error(error);
-//   }
-// };
 
 export const updateCart = async (cartId, itemId, quantity) => {
   const updateCartMutation = gql`
@@ -392,6 +347,34 @@ export const getBannersHome = async () => {
   `;
   try {
     const data = await graphQLClient.request(GET_META_FIELDS);
+    return data;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+export const getCollections = async () => {
+  // console.log(collectionHandle);
+
+  const response = gql`
+    query getCollection {
+      collections(first: 10) {
+        edges {
+          node {
+            id
+            handle
+            title
+            description
+            image {
+              src
+            }
+          }
+        }
+      }
+    }
+  `;
+  try {
+    const data = await graphQLClient.request(response);
     return data;
   } catch (error) {
     throw new Error(error);
