@@ -1,18 +1,32 @@
+"use client";
+
 import Link from "next/link";
 import styles from "../../styles/Home.module.css";
 import { searchProductsPredictive } from "../../utils/shopify";
 import React, { useState, useEffect, useRef, useContext } from "react";
-import AppContext from "../../context/AppContext";
+import { retrieveCart } from "../../utils/shopify";
+import { useRouter } from "next/router";
 
-export default function Header() {
+export default function Header(cart, cartid) {
   const [inputValue, setInputValue] = useState("");
+  const [dataCartId, setCartId] = useState(null);
+  const [quantityCartId, setCartQuantity] = useState(0);
   const [searchResults, setSearchResults] = useState([]);
   const [isFocused, setIsFocused] = useState(false);
   const searchInputRef = useRef(null);
   const searchResultsRef = useRef(null);
 
-  const { setSelectedProduct } = useContext(AppContext);
-  console.log(setSelectedProduct);
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      let id = window.sessionStorage.getItem("cartId");
+
+      if (id !== null) {
+        setCartId(id);
+      }
+
+      console.log(id);
+    }
+  }, []);
 
   useEffect(() => {
     if (inputValue.length > 0) {
@@ -25,22 +39,53 @@ export default function Header() {
     }
   }, [inputValue]);
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (
-        searchInputRef.current &&
-        !searchInputRef.current.contains(event.target) &&
-        searchResultsRef.current &&
-        !searchResultsRef.current.contains(event.target)
-      ) {
-        setIsFocused(false);
+  // useEffect(() => {
+  //   const handleClickOutside = (event) => {
+  //     if (
+  //       searchInputRef.current &&
+  //       !searchInputRef.current.contains(event.target) &&
+  //       searchResultsRef.current &&
+  //       !searchResultsRef.current.contains(event.target)
+  //     ) {
+  //       setIsFocused(false);
+  //     }
+  //   };
+  //   document.addEventListener("mousedown", handleClickOutside);
+  //   return () => {
+  //     document.removeEventListener("mousedown", handleClickOutside);
+  //   };
+  // }, []);
+
+  const router = useRouter();
+
+  const redirectToCart = () => {
+    if (router.pathname !== "/cart") {
+      router.push(`/cart?cartid=${dataCartId}`);
+    }
+  };
+
+  const fetchCartQuantity = async () => {
+    try {
+      const cartData = await retrieveCart(dataCartId);
+      let totalQuantity = 0;
+
+      if (cartData.lines && cartData.lines.edges) {
+        for (const item of cartData.lines.edges) {
+          totalQuantity += item.node.quantity;
+        }
       }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
+
+      setCartQuantity(totalQuantity);
+    } catch (error) {
+      console.error("Erro ao obter dados do carrinho:", error.message);
+    }
+  };
+
+  useEffect(() => {
+    if (dataCartId !== null) {
+      fetchCartQuantity();
+    }
+  }, [dataCartId]);
 
   return (
     <>
@@ -89,7 +134,7 @@ export default function Header() {
               <a href="#">iPhone</a>
               <a href="#">Apple Watch</a>
               <a href="#">AirPods</a>
-              <a href="#">Acessorios</a>
+              <a href="#">Acessórios</a>
               <a href="#">Quem é Gusk</a>
               <a href="#">F.A.Q</a>
               <div className={styles.dot}></div>
@@ -99,7 +144,21 @@ export default function Header() {
 
         <div className={styles.logoContainer}>
           <img className={styles.imgIcon} src="/customerIcon.svg" alt="" />
-          <img className={styles.imgIcon} src="/Prancheta.svg" alt="" />
+          {dataCartId !== null ? (
+            <button className={styles.btnIconCart} onClick={redirectToCart}>
+              <div className={styles.imageicon}>
+                <img className={styles.imgIcon} src="/Prancheta.svg" alt="" />
+              </div>
+              <div className={styles.cartIndicator}>{quantityCartId}</div>
+            </button>
+          ) : (
+            <div>
+              <div className={styles.imageicon}>
+                <img className={styles.imgIcon} src="/Prancheta.svg" alt="" />
+              </div>
+              <div className={styles.cartIndicator}>{quantityCartId}</div>
+            </div>
+          )}
         </div>
       </header>
     </>

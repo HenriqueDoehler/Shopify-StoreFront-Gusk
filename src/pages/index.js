@@ -1,12 +1,37 @@
 import Head from "next/head";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "../styles/Home.module.css";
-import { getProducts, getBannersHome, getCollections } from "../utils/shopify";
+import {
+  getProducts,
+  getBannersHome,
+  getCollections,
+  getNodeImageBanner,
+} from "../utils/shopify";
 import ProductCard from "../components/ProductCard/ProductCard";
 import CollectionsCard from "@/components/CollectionCard/CollectionCard";
 import Header from "../components/Header/Header";
 
-export default function Home({ data, collections, collectionsWithImageUrl }) {
+export default function Home({
+  data,
+
+  collectionsWithImageUrl,
+
+  bannerData,
+}) {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  const handleNextImage = () => {
+    setCurrentImageIndex((currentImageIndex + 1) % bannerData.length);
+  };
+
+  useEffect(() => {
+    const interval = setInterval(handleNextImage, 5000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [currentImageIndex]);
+
   const products = data.products.edges;
 
   return (
@@ -18,14 +43,36 @@ export default function Home({ data, collections, collectionsWithImageUrl }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header />
+
       <main>
-        <div>
-          <img src="/banner1.svg" />
+        <div className={styles.bannerContainer}>
+          <div>
+            {bannerData.length > 0 && (
+              <img src={bannerData[currentImageIndex].url} alt="" />
+            )}
+          </div>
+          <div className={styles["bullet-container"]}>
+            {bannerData.map((_, index) => (
+              <div
+                key={index}
+                className={`${styles.bullet} ${
+                  index === currentImageIndex ? styles.active : ""
+                }`}
+                onClick={() => setCurrentImageIndex(index)}
+              ></div>
+            ))}
+          </div>
         </div>
         <Carousel collectionsWithImageUrl={collectionsWithImageUrl} />
         <div className={styles.products}>
           {products.map((product) => {
-            return <ProductCard key={product.node.id} product={product} />;
+            return (
+              <ProductCard
+                className={styles.productBox}
+                key={product.node.id}
+                product={product}
+              />
+            );
           })}
         </div>
       </main>
@@ -36,19 +83,41 @@ export default function Home({ data, collections, collectionsWithImageUrl }) {
 export const getServerSideProps = async () => {
   const data = await getProducts();
   const collections = await getCollections();
+  const banners = await getBannersHome();
+
   const allCollections = collections.collections.edges.flat();
+
   const collectionsWithImageUrl = allCollections.map((collection) => {
     const image = collection.node.image;
     const imageUrl = image.src;
-
     return {
       ...collection,
       imageUrl,
     };
   });
-  console.log(collectionsWithImageUrl);
+
+  const bannerData = await Promise.all(
+    banners.metaobjects.edges.map(async (banner) => {
+      const bannerNode = banner.node;
+      const bannerFields = bannerNode.fields.map((field) => {
+        return {
+          name: field.name,
+          value: field.value,
+        };
+      });
+      const bannerIds = bannerFields.map((values) => values);
+      const valores = extractValues(bannerIds);
+      const respostasNodeImage = await fetchNodeImageBanners(valores);
+      const UrlBannerMedia = respostasNodeImage[0].node.image.url;
+
+      return {
+        url: UrlBannerMedia,
+      };
+    })
+  );
+
   return {
-    props: { data, collectionsWithImageUrl },
+    props: { data, collectionsWithImageUrl, bannerData },
   };
 };
 
@@ -67,6 +136,9 @@ const Carousel = ({ collectionsWithImageUrl }) => {
   return (
     <div className={styles.carouselContainer}>
       <div className={styles.carousel}>
+        <button className={styles.buttonSetaL} onClick={handleClick}>
+          <img src="/seta-direita.svg" />
+        </button>
         {collectionsWithImageUrl
           .slice(
             currentImageIndex * itemsPerPage,
@@ -86,10 +158,35 @@ const Carousel = ({ collectionsWithImageUrl }) => {
               <img className={styles.imgCarousel} src={collection.imageUrl} />
             </div>
           ))}
-        <button onClick={handleClick}>
-          <img src="/assets/arrow-right.svg" />
+        <button className={styles.buttonSeta} onClick={handleClick}>
+          <img src="/seta-direita.svg" />
         </button>
       </div>
     </div>
   );
 };
+
+function extractValues(inputArray) {
+  const values = [];
+
+  for (const item of inputArray) {
+    try {
+      const parsedValue = JSON.parse(item.value);
+      values.push(parsedValue[0]);
+    } catch (error) {
+      console.error(`Erro ao analisar JSON: ${error}`);
+    }
+  }
+
+  return values;
+}
+async function fetchNodeImageBanners(values) {
+  const responses = [];
+
+  for (const value of values) {
+    const responseBanner = await getNodeImageBanner(value);
+    responses.push(responseBanner);
+  }
+
+  return responses;
+}

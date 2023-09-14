@@ -25,9 +25,19 @@ export const getProducts = async () => {
                 amount
               }
             }
-            variants(first: 1) {
+            variants(first: 10) {
               edges {
                 node {
+                  id
+                  sku
+                  title
+
+                  price {
+                    amount
+                  }
+                  image {
+                    url
+                  }
                   compareAtPriceV2 {
                     amount
                   }
@@ -107,7 +117,34 @@ export const updateCart = async (cartId, itemId, quantity) => {
   }
 };
 
+export const removeCartItem = async (cartId, lineId) => {
+  const removeCartItemMutation = gql`
+    mutation cartLinesRemove($cartId: ID!, $lineIds: [ID!]!) {
+      cartLinesRemove(cartId: $cartId, lineIds: $lineIds) {
+        cart {
+          id
+        }
+      }
+    }
+  `;
+  const variables = {
+    cartId: cartId,
+    lineIds: [lineId],
+  };
+
+  try {
+    const data = await graphQLClient.request(removeCartItemMutation, variables);
+    return data;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
 export const retrieveCart = async (cartId) => {
+  if (!cartId.includes("gid://")) {
+    cartId = cartId.replace("gid:/", "gid://");
+  }
+  // console.log(cartId);
   const cartQuery = gql`
     query cartQuery($cartId: ID!) {
       cart(id: $cartId) {
@@ -172,20 +209,44 @@ export const getProduct = async (id) => {
         handle
         title
         description
+        metafield(key: "Color", namespace: "") {
+          value
+        }
         priceRange {
           minVariantPrice {
             amount
             currencyCode
           }
         }
+
         featuredImage {
           url
           altText
         }
-        variants(first: 10) {
+
+        images(first: 10) {
           edges {
             node {
+              url
+              altText
+            }
+          }
+        }
+        variants(first: 100) {
+          edges {
+            node {
+              title
+              quantityAvailable
               id
+              availableForSale
+              sku
+              image {
+                url
+              }
+              price {
+                amount
+                currencyCode
+              }
             }
           }
         }
@@ -333,13 +394,18 @@ export const searchProductsPredictive = async (searchTerm) => {
 export const getBannersHome = async () => {
   const GET_META_FIELDS = gql`
     {
-    
-        metafields(
-          first: 10
-          
-        ) {
-          edges {
-           
+      metaobjects(type: "Banners", first: 10) {
+        edges {
+          node {
+            id
+            handle
+            type
+            fields {
+              key
+              value
+              reference
+              type
+            }
           }
         }
       }
@@ -354,8 +420,6 @@ export const getBannersHome = async () => {
 };
 
 export const getCollections = async () => {
-  // console.log(collectionHandle);
-
   const response = gql`
     query getCollection {
       collections(first: 10) {
@@ -375,6 +439,34 @@ export const getCollections = async () => {
   `;
   try {
     const data = await graphQLClient.request(response);
+    return data;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+export const getNodeImageBanner = async (id) => {
+  const response = gql`
+    query getBannerVariantsFromNode($id: ID!) {
+      node(id: $id) {
+        id
+        ... on MediaImage {
+          id
+          alt
+          image {
+            url
+          }
+        }
+      }
+    }
+  `;
+
+  const variables = {
+    id,
+  };
+
+  try {
+    const data = await graphQLClient.request(response, variables);
     return data;
   } catch (error) {
     throw new Error(error);

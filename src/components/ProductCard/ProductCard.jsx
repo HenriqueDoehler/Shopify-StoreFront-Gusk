@@ -3,6 +3,7 @@ import Link from "next/link";
 import styles from "../../styles/ProductCard.module.css";
 
 export default function ProductCard({ product }) {
+  // console.log(product.node);
   return (
     <>
       <div className={styles.card}>
