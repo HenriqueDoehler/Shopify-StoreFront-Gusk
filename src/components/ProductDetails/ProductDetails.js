@@ -140,7 +140,8 @@ export default function ProductDetails({ product }) {
                 </span>
               </h3>
               <div className={styles.productCondition}>
-                {primeiraParte && <p>{primeiraParte}</p>}
+                <p>{primeiraParte}</p> <br />
+                {product.description}
               </div>
             </span>
             <div className={styles.image}>
@@ -165,7 +166,6 @@ export default function ProductDetails({ product }) {
             {error && <p className={styles.error}>{error}</p>}
 
             <div className={styles.variants}>
-              {/* Botões para "color" */}
               {getUniqueColors().map((color) => (
                 <button
                   key={color}

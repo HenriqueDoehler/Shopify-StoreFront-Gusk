@@ -1,18 +1,52 @@
 .card {
-    padding: 1rem 1.2rem;
-    background-color: blue;
-    width: 100%;
-    height: 50%;
-  }
-  
-  .image {
-    width: 100px;
-    height: 100px;
-    position: relative;
-  
-  }
-  .content {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 0.5rem;
-  }
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
+  padding: 1rem 1.2rem;
+
+  width: 100%;
+  height: 50vh;
+}
+
+.image {
+  width: 100%;
+  height: 60%;
+  position: relative;
+}
+.content {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-evenly;
+  flex-direction: column;
+  width: 80%;
+
+  padding: 10px;
+  margin-top: 0.5rem;
+}
+.price {
+  margin-top: 10%;
+}
+
+.buttonBuyCard {
+  background-color: #4caf50;
+  align-self: flex-end;
+
+  color: #fff;
+
+  padding: 5px 15px;
+
+  border-radius: 5px;
+
+  transition: background-color 0.3s ease;
+}
+
+.buttonBuyCard:hover {
+  background-color: #45a049;
+}
+
+.titleP,
+.price {
+  display: flex;
+  font-size: 18px;
+}

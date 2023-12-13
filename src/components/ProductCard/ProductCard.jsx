@@ -3,10 +3,18 @@ import Link from "next/link";
 import styles from "../../styles/ProductCard.module.css";
 
 export default function ProductCard({ product }) {
+  const handleBuyClick = (product) => {
+    const productUrl = `products/${product.node.handle}/?productid=${product.node.id}`;
+
+    // Redirecionar para a URL do produto
+    window.location.href = productUrl;
+  };
+
   // console.log(product.node);
   return (
     <>
       <div className={styles.card}>
+       
         <div className={styles.image}>
           <Image
             src={product.node.featuredImage.url}
@@ -15,7 +23,7 @@ export default function ProductCard({ product }) {
           />
         </div>
         <div className={styles.content}>
-          <small>
+          <small className={styles.titleP}>
             <Link
               href={`products/${product.node.handle}/?productid=${product.node.id}`}
               className={styles.action}
@@ -23,7 +31,16 @@ export default function ProductCard({ product }) {
               {product.node.title}
             </Link>
           </small>
-          <small>{product.node.priceRange.minVariantPrice.amount}</small>
+          <small className={styles.price}>
+            <img width={20} height={14} src="/orangeGuskLogo.svg" />
+            {product.node.priceRange.minVariantPrice.amount}
+          </small>
+          <button
+            className={styles.buttonBuyCard}
+            onClick={() => handleBuyClick(product)}
+          >
+            Comprar
+          </button>
         </div>
       </div>
     </>
