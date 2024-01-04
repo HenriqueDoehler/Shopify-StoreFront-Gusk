@@ -1,49 +1,46 @@
 .container {
-    display: flex;
-    background-color: aquamarine;
-    align-items: center;
-    justify-content: center;
-  }
-.productContainer{
-  background-color: #b47d44;
+  display: flex;
+  background-color: rgba(127, 255, 212, 0);
+  align-items: center;
+  justify-content: center;
+}
+.productContainer {
+  background-color: #000000;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 80px;
   width: 100%;
-
-
 }
-  .image {
-    width: 100%;
-    height: 300px;
-    
-  }
-  .image > div:nth-child(1) {
-    display: flex;
-    background-color: blue;
-    height: 300px;
-    padding: 10px;
-    justify-content: center;
-  }
-  .cartbtn {
-    margin-top: 0.5rem;
-    background-color: #b47e4433;
-    color: #b47d44;
-    border: #b47e4433;
-    padding: 0.8rem;
-    cursor: pointer;
-    width: 100%;
-  }
-  .cartbtn:hover {
-    background-color: rgba(180, 126, 68, 0.092);
-  }
-  
-  .cartbtn:active {
-    background-color: rgba(180, 126, 68, 0.43);
-  }
+.image {
+  width: 100%;
+  height: 300px;
+}
+.image > div:nth-child(1) {
+  display: flex;
+  background-color: rgba(0, 0, 255, 0);
+  height: 300px;
+  padding: 10px;
+  justify-content: center;
+}
+.cartbtn {
+  margin-top: 0.5rem;
+  background-color: #b47e447e;
+  color: #b47d44;
+  border: #b47e4433;
+  padding: 0.8rem;
+  cursor: pointer;
+  width: 100%;
+}
+.cartbtn:hover {
+  background-color: rgba(180, 126, 68, 0.092);
+}
 
-.infoSection{
+.cartbtn:active {
+  background-color: rgba(180, 126, 68, 0.43);
+}
+
+.infoSection {
   background-color: #b47d44;
   display: flex;
   align-items: center;
@@ -51,20 +48,101 @@
   padding: 80px;
 }
 
-.ImageProductContainer{
+.ImageProductContainer {
   display: flex;
-  background-color: brown;
+  background-color: rgba(165, 42, 42, 0);
   width: 600px;
   align-items: flex-start;
   flex-direction: column;
   padding: 20px;
 }
-.amountSpan{
-  color: #FF8C42;
-  font-family: 'Shantell Sans', cursive;
+.amountSpan {
+  color: #ff8c42;
+  font-family: "Shantell Sans", cursive;
 }
-.productCondition{
-  font-family: 'Shantell Sans', cursive;
+.productCondition {
+  font-family: "Shantell Sans", cursive;
   color: #b2b1b1;
+}
+.divTEST {
+  background-color: rgba(255, 0, 0, 0);
+  width: 400px;
+  height: 200px;
+}
 
+.content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  /* width: 300px;
+  height: 400px; */
+  /* background-color: red; */
+}
+
+.spanBoxTitle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 380px;
+  height: 100px;
+  border: #ff8c42 solid 2px;
+  border-radius: 15px;
+  background-color: #ff8a427e;
+  padding: 10px;
+}
+
+.boxCondition {
+  display: flex;
+  background-color: #d81159;
+  font-size: 14px;
+  font-family: "Shantell Sans", cursive;
+  padding: 1px;
+  justify-content: center;
+  max-width: 100px;
+  min-width: 90px;
+  border-radius: 3px;
+  margin-top: 5px;
+}
+
+.textPainel {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: flex-start;
+  margin-top: 10px;
+  margin-bottom: 5px;
+  padding: 5px;
+}
+
+.destaque {
+  color: #ff8c42;
+}
+
+
+.variants{
+  background-color: red;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: flex-start;
+
+}
+
+.variants button {
+   background-color: black;
+  width: 100%;
+  height: 25px;
+  border: none;
+  font-weight: 800;
+  
+}
+
+.variants button:hover {
+   background-color: rgb(195, 155, 23);
+  width: 100%;
+  height: 25px;
+  border: none;
+  font-weight: 800;
+  
 }

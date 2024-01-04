@@ -1,9 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import styles from "../../styles/ProductCard.module.css";
-import React from "react";
 
-export default React.memo(function ProductCard({ product }) {
+export default function ProductCard({ product }) {
   const handleBuyClick = (product) => {
     const productUrl = `products/${product.node.handle}/?productid=${product.node.id}`;
 
@@ -14,11 +13,7 @@ export default React.memo(function ProductCard({ product }) {
     <>
       <div className={styles.card}>
         <div className={styles.image}>
-          <Image
-            src={product.node.featuredImage.url}
-            alt={product.node.featuredImage.alttext}
-            fill={true}
-          />
+          <Image src={product.node.images.edges[0].node.src} fill={true} />
         </div>
         <div className={styles.content}>
           <small className={styles.titleP}>
@@ -43,4 +38,4 @@ export default React.memo(function ProductCard({ product }) {
       </div>
     </>
   );
-});
+}

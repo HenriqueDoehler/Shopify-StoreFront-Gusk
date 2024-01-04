@@ -1,0 +1,18 @@
+.footer {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  justify-content: space-between;
+  /* top: -100px; */
+}
+.list {
+  display: flex;
+  justify-content: flex-end;
+  padding: 5px;
+ 
+}
+.divImg{
+  width: 30%;
+  margin-top: 1%;
+  margin-left: 1%;
+}

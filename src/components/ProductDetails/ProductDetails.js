@@ -1,3 +1,4 @@
+import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
@@ -5,13 +6,14 @@ import { addToCart, updateCart } from "../../utils/shopify";
 import styles from "../../styles/ProductDetails.module.css";
 
 export default function ProductDetails({ product }) {
-  console.log(product);
+
   const [checkout, setCheckout] = useState(false);
   const [variants, setVariants] = useState([]);
   const [descriptionProductImage, setDescriptionProductImage] = useState(null);
   const [descriptionProductMobileImage, setDescriptionProductMobileImage] =
     useState(null);
-  const [primeiraParte, setPrimeiraParte] = useState(null);
+  const [primeiraParteProductCondition, setPrimeiraParteProductCondition] =
+    useState(null);
   const [selectedColor, setSelectedColor] = useState(null);
   const [currentImage, setCurrentImage] = useState(
     product.image ? product.image.url : product.featuredImage.url
@@ -108,8 +110,8 @@ export default function ProductDetails({ product }) {
     }
 
     if (variantsArray.length > 0) {
-      const primeiraParteVariante = variantsArray[0].parts[0];
-      setPrimeiraParte(primeiraParteVariante);
+      const primeiraParteProductConditionVariante = variantsArray[0].parts[0];
+      setPrimeiraParteProductCondition(primeiraParteProductConditionVariante);
     }
   }, [product]);
   useEffect(() => {
@@ -127,6 +129,12 @@ export default function ProductDetails({ product }) {
 
   return (
     <>
+      <Head>
+        <title>GUSK Imports</title>
+        <meta name="description" content="Gusk Imports" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/orangeGuskLogo.svg" />
+      </Head>
       <div className={styles.container}>
         <div className={styles.productContainer}>
           <div className={styles.ImageProductContainer}>
@@ -140,7 +148,7 @@ export default function ProductDetails({ product }) {
                 </span>
               </h3>
               <div className={styles.productCondition}>
-                <p>{primeiraParte}</p> <br />
+                <p>{primeiraParteProductCondition}</p> <br />
                 {product.description}
               </div>
             </span>
@@ -155,42 +163,31 @@ export default function ProductDetails({ product }) {
             </div>
           </div>
           <div className={styles.content}>
-            <span>
-              <h2>{product.title}</h2>
+            <div className={styles.textPainel}>
+              <h2>
+                Escolha o <span className={styles.destaque}>modelo</span> que é
+                a <br /> sua cara
+              </h2>
+            </div>
+
+            <span className={styles.spanBoxTitle}>
+              <div>
+                {product.title} <br />
+                <div className={styles.boxCondition}>
+                  {primeiraParteProductCondition}
+                </div>
+              </div>
+
               <h3>{currentPrice}</h3>
             </span>
 
-            <button className={styles.cartbtn} onClick={handleAddToCart}>
-              Add to Cart
-            </button>
             {error && <p className={styles.error}>{error}</p>}
-
-            <div className={styles.variants}>
-              {getUniqueColors().map((color) => (
-                <button
-                  key={color}
-                  className={`${styles.variant} ${
-                    selectedColor === color ? styles.selected : ""
-                  }`}
-                  onClick={() => handleColorSelect(color)}
-                  style={{ backgroundColor: color }}
-                  disabled={
-                    !variants.some(
-                      (variant) =>
-                        variant.parts[1] === color &&
-                        variant.parts[2] === selectedSize &&
-                        variant.quantityAvailable > 0 // Check if quantityAvailable is greater than 0
-                    )
-                  }
-                >
-                  <Image
-                    width={20}
-                    height={20}
-                    className=""
-                    src={"/logoGuskSemFundo.svg"}
-                  />
-                </button>
-              ))}
+            <div className={styles.textPainel}>
+              <h2>
+                De quanto espaço de <br />{" "}
+                <span className={styles.destaque}>armazenamento</span> você
+                precisa?
+              </h2>
             </div>
             <div className={styles.variants}>
               {getUniqueSizes().map((size) => (
@@ -206,7 +203,7 @@ export default function ProductDetails({ product }) {
                       (variant) =>
                         variant.parts[1] === selectedColor &&
                         variant.parts[2] === size &&
-                        variant.quantityAvailable > 0 // Check if quantityAvailable is greater than 0
+                        variant.quantityAvailable > 0
                     )
                   }
                 >
@@ -222,6 +219,42 @@ export default function ProductDetails({ product }) {
                 <></>
               )}
             </div>
+            <div className={styles.textPainel}>
+              <h2>
+                Qual <span className={styles.destaque}>cor</span> combina +
+                <br /> com você?
+              </h2>
+            </div>
+            <div className={styles.variants}>
+              {getUniqueColors().map((color) => (
+                <button
+                  key={color}
+                  className={`${styles.variant} ${
+                    selectedColor === color ? styles.selected : ""
+                  }`}
+                  onClick={() => handleColorSelect(color)}
+                  style={{ backgroundColor: color }}
+                  disabled={
+                    !variants.some(
+                      (variant) =>
+                        variant.parts[1] === color &&
+                        variant.parts[2] === selectedSize &&
+                        variant.quantityAvailable > 0
+                    )
+                  }
+                >
+                  <Image
+                    width={20}
+                    height={20}
+                    className=""
+                    src={"/logoGuskSemFundo.svg"}
+                  />
+                </button>
+              ))}
+            </div>
+            <button className={styles.cartbtn} onClick={handleAddToCart}>
+              Add to Cart
+            </button>
           </div>
         </div>
       </div>
@@ -230,9 +263,7 @@ export default function ProductDetails({ product }) {
         {descriptionProductImage && (
           <img src={descriptionProductImage} alt="Description Product" />
         )}
-        {descriptionProductImage && (
-          <img src={descriptionProductImage} alt="Description Product" />
-        )}
+        <div className={styles.divTEST}></div>
       </div>
     </>
   );

@@ -562,7 +562,7 @@
   top: 3%;
   right: 1.5%;
   background-color: #d81159;
-  color: white;
+  color: rgb(255, 255, 255);
   border-radius: 50%;
   width: 25px;
   height: 25px;
@@ -629,21 +629,42 @@
 .spanButtonVM {
   width: 100%;
   display: flex;
-  justify-content: flex-end;
-  padding-right: 20px;
+  justify-content: space-between;
+  padding-right: 5%;
+  padding-left: 5%;
+  background-color: #1d1d1d00;
+  font-size: 20px;
+  font-weight: 400;
+ 
+}
+.vmspan{
+  color: orange;
+}
+.containerImgRedes{
+  z-index: -1;
+}
+.redes {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  margin-top: -35%;
+  position: relative;
+  bottom: -90px;
+  z-index: -1;
+}
+.redesImg {
+  width: 100%;
 }
 
-.Overlay {
-  position: fixed;
-  display: flex;
-  width: 100vw;
-  height: 100vh;
-  background-color: #1a1a1a91;
-  z-index: 100;
-  align-items: flex-start;
-  justify-content: flex-end;
+
+.sliderDiv {
+  align-items: center;
+  justify-content: center;
+  max-width: 90vw;
 }
-.imgSoon {
-  width: 400x;
-  height: 400px;
+.containerSlider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

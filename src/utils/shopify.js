@@ -20,12 +20,13 @@ export const getProducts = async () => {
             title
             handle
             description
+
             priceRange {
               minVariantPrice {
                 amount
               }
             }
-            variants(first: 10) {
+            variants(first: 20) {
               edges {
                 node {
                   id
@@ -209,6 +210,7 @@ export const getProduct = async (id) => {
         handle
         title
         description
+
         metafield(key: "Color", namespace: "") {
           value
         }
@@ -419,10 +421,49 @@ export const getBannersHome = async () => {
   }
 };
 
+export const getProductsInCollection = async (collectionId) => {
+  const response = gql`
+    query getProductsInCollection {
+     collection(id: "gid://shopify/Collection/${collectionId}") {
+        title
+        products(first: 10) {  
+          edges {
+            node {
+              id
+              title
+              handle
+              description
+              images(first: 1) {
+                edges {
+                  node {
+                    src
+                  }
+                }
+              }
+              priceRange {
+                minVariantPrice {
+                  amount
+                  currencyCode
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  `;
+  try {
+    const data = await graphQLClient.request(response);
+    return data;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
 export const getCollections = async () => {
   const response = gql`
     query getCollection {
-      collections(first: 10) {
+      collections(first: 6) {
         edges {
           node {
             id
@@ -470,5 +511,133 @@ export const getNodeImageBanner = async (id) => {
     return data;
   } catch (error) {
     throw new Error(error);
+  }
+};
+
+export const getCustomerOrders = async (customerAccessToken) => {
+  const query = `
+    query getCustomerOrders($customerAccessToken: String!) {
+      customer(customerAccessToken: $customerAccessToken) {
+        orders(first: 10) {
+          edges {
+            node {
+              id
+              orderNumber
+              totalPriceV2 {
+                amount
+                currencyCode
+              }
+              lineItems(first: 5) {
+                edges {
+                  node {
+                    title
+                    quantity
+                    variant {
+                      priceV2 {
+                        amount
+                        currencyCode
+                      }
+                      product {
+                        title
+                        handle
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  `;
+
+  const variables = { customerAccessToken };
+
+  try {
+    const data = await graphQLClient.request(query, variables);
+    return data;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+export const createCustomer = async ( {email,
+  password,
+  firstName,
+  lastName,
+  phone,
+  acceptsMarketing}
+  
+) => {
+  const query = `
+    mutation customerCreate($input: CustomerCreateInput!) {
+      customerCreate(input: $input) {
+        customer {
+          id
+          email
+          phone
+          firstName
+          lastName
+          acceptsMarketing
+        }
+        customerUserErrors {
+          code
+          field
+          message
+        }
+      }
+    }
+  `;
+
+  const variables = {
+    input: {
+      email,
+      password,
+      firstName,
+      lastName,
+      phone,
+      acceptsMarketing,
+    },
+  };
+
+  try {
+    const data = await graphQLClient.request(query, variables);
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw new Error(error.message);
+  }
+};
+
+export const customerAccessTokenCreate = async (email, password) => {
+  const query = `
+    mutation customerAccessTokenCreate($input: CustomerAccessTokenCreateInput!) {
+      customerAccessTokenCreate(input: $input) {
+        customerAccessToken {
+          accessToken
+          expiresAt
+        }
+        customerUserErrors {
+          code
+          field
+          message
+        }
+      }
+    }
+  `;
+
+  const variables = {
+    input: {
+      email,
+      password,
+    },
+  };
+
+  try {
+    const data = await graphQLClient.request(query, variables);
+    return data;
+  } catch (error) {
+    throw new Error(error.message);
   }
 };

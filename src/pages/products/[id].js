@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import Header from "../../components/Header/Header";
+import { Footer } from "@/components/Footer/footer";
 import ProductDetails from "../../components/ProductDetails/ProductDetails";
 import { getProduct } from "../../utils/shopify";
 
@@ -9,6 +10,7 @@ export default function Product({ product }) {
     <>
       <Header />
       <ProductDetails product={product} />
+      <Footer />
     </>
   );
 }

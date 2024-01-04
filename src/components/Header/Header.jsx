@@ -16,6 +16,10 @@ export default function Header(cart, cartid) {
   const searchInputRef = useRef(null);
   const searchResultsRef = useRef(null);
 
+  const collections = {
+    iphone: "459822596409",
+  };
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       let id = window.sessionStorage.getItem("cartId");
@@ -129,9 +133,16 @@ export default function Header(cart, cartid) {
           </div>
           <div className={styles.containerNavbar}>
             <nav className={styles.navMenu}>
-              <a href="#">Mac</a>
+              <a href="/collections/gid://shopify/Collection/459822596409">
+                Mac
+              </a>
               <a href="#">iPad</a>
-              <a href="#">iPhone</a>
+              <Link href={`/${collections.iphone}`}>
+                <span>Iphone</span>
+              </Link>
+              <Link href={`/auth`}>
+                <span>Iphone</span>
+              </Link>
               <a href="#">Apple Watch</a>
               <a href="#">AirPods</a>
               <a href="#">Acessórios</a>

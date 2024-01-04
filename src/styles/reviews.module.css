@@ -1,0 +1,51 @@
+.co {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.containerSliderR {
+  width: 90vw;
+}
+.liReviews {
+  border: #ff8a4200 5px solid;
+  border-radius: 3%;
+  background-color: rgba(118, 106, 106, 0.6);
+  margin: 20px;
+  padding: 15px;
+  z-index: 1000;
+}
+.ulReviews {
+  margin: 20px;
+  z-index: 1000;
+}
+.name {
+  font-size: 22px;
+  padding-top: 5px;
+}
+.instagram {
+  color: rgb(101, 101, 101);
+  font-size: 20px;
+  font-weight: 600;
+  padding-top: 10px;
+}
+
+.divContainer {
+  /* background-color: rebeccapurple; */
+  padding-right: 25px;
+}
+.divphoto {
+  border-radius: 50px;
+  border: 2px solid orange;
+}
+.deliveryTime {
+  padding-top: 5px;
+  color: greenyellow;
+}
+.textFeedback {
+  color: #ff8c42;
+  font-family: "Shantell Sans", cursive;
+  font-weight: 100;
+  font-size: 28px;
+  padding: 10px;
+  padding-left: 50px;
+}
