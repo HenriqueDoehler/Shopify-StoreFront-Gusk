@@ -6,7 +6,6 @@ import { addToCart, updateCart } from "../../utils/shopify";
 import styles from "../../styles/ProductDetails.module.css";
 
 export default function ProductDetails({ product }) {
-
   const [checkout, setCheckout] = useState(false);
   const [variants, setVariants] = useState([]);
   const [descriptionProductImage, setDescriptionProductImage] = useState(null);
@@ -15,6 +14,8 @@ export default function ProductDetails({ product }) {
   const [primeiraParteProductCondition, setPrimeiraParteProductCondition] =
     useState(null);
   const [selectedColor, setSelectedColor] = useState(null);
+  console.log(selectedColor);
+  console.log(variants);
   const [currentImage, setCurrentImage] = useState(
     product.image ? product.image.url : product.featuredImage.url
   );
@@ -184,7 +185,7 @@ export default function ProductDetails({ product }) {
             {error && <p className={styles.error}>{error}</p>}
             <div className={styles.textPainel}>
               <h2>
-                De quanto espaço de <br />{" "}
+                De quanto espaço de <br />
                 <span className={styles.destaque}>armazenamento</span> você
                 precisa?
               </h2>
@@ -210,14 +211,6 @@ export default function ProductDetails({ product }) {
                   {size}
                 </button>
               ))}
-
-              {checkout ? (
-                <Link href={`/cart?cartid=${sessionStorage.getItem("cartId")}`}>
-                  Carrinho
-                </Link>
-              ) : (
-                <></>
-              )}
             </div>
             <div className={styles.textPainel}>
               <h2>
@@ -226,35 +219,55 @@ export default function ProductDetails({ product }) {
               </h2>
             </div>
             <div className={styles.variants}>
-              {getUniqueColors().map((color) => (
-                <button
-                  key={color}
-                  className={`${styles.variant} ${
-                    selectedColor === color ? styles.selected : ""
-                  }`}
-                  onClick={() => handleColorSelect(color)}
-                  style={{ backgroundColor: color }}
-                  disabled={
-                    !variants.some(
-                      (variant) =>
-                        variant.parts[1] === color &&
-                        variant.parts[2] === selectedSize &&
-                        variant.quantityAvailable > 0
-                    )
-                  }
-                >
-                  <Image
-                    width={20}
-                    height={20}
-                    className=""
-                    src={"/logoGuskSemFundo.svg"}
-                  />
-                </button>
-              ))}
+              {getUniqueColors().map((color) => {
+                const matchingVariant = variants.find(
+                  (variant) =>
+                    variant.parts[1] === color &&
+                    variant.parts[2] === selectedSize
+                );
+
+                const isAvailable =
+                  matchingVariant && matchingVariant.quantityAvailable > 0;
+
+                return (
+                  <button
+                    key={color}
+                    className={`${styles.variant} ${
+                      selectedColor === color ? styles.selected : ""
+                    }`}
+                    onClick={() => handleColorSelect(color)}
+                    style={{
+                      backgroundColor: color,
+                    }}
+                    disabled={!isAvailable}
+                  >
+                    {isAvailable ? (
+                      <Image
+                        width={20}
+                        height={20}
+                        className=""
+                        src={"/logoGuskSemFundo.svg"}
+                      />
+                    ) : (
+                      <span className={styles.X}>X</span>
+                    )}
+                  </button>
+                );
+              })}
             </div>
             <button className={styles.cartbtn} onClick={handleAddToCart}>
-              Add to Cart
+              Adicionar ao carrinho
             </button>
+            {checkout ? (
+              <Link
+                className={styles.cartbtn}
+                href={`/cart?cartid=${sessionStorage.getItem("cartId")}`}
+              >
+                Ir para o Carrinho
+              </Link>
+            ) : (
+              <></>
+            )}
           </div>
         </div>
       </div>
